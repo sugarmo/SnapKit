@@ -27,34 +27,77 @@
     import AppKit
 #endif
 
-
-public class LayoutConstraint : NSLayoutConstraint {
-    
+public class LayoutConstraint: NSLayoutConstraint {
     public var label: String? {
         get {
-            return self.identifier
+            return identifier
         }
         set {
-            self.identifier = newValue
+            identifier = newValue
         }
     }
-    
-    internal weak var constraint: Constraint? = nil
-    
+
+    internal weak var constraint: Constraint?
+
+    override public var description: String {
+        var description = "<"
+
+        description += descriptionForObject(self)
+
+        if let firstItem = self.firstItem {
+            description += " \(descriptionForObject(firstItem))"
+        }
+
+        if firstAttribute != .notAnAttribute {
+            description += ".\(descriptionForAttribute(firstAttribute))"
+        }
+
+        description += " \(descriptionForRelation(relation))"
+
+        if let secondItem = self.secondItem {
+            description += " \(descriptionForObject(secondItem))"
+        }
+
+        if secondAttribute != .notAnAttribute {
+            description += ".\(descriptionForAttribute(secondAttribute))"
+        }
+
+        if multiplier != 1.0 {
+            description += " * \(multiplier)"
+        }
+
+        if secondAttribute == .notAnAttribute {
+            description += " \(constant)"
+        } else {
+            if constant > 0.0 {
+                description += " + \(constant)"
+            } else if constant < 0.0 {
+                description += " - \(abs(constant))"
+            }
+        }
+
+        if priority.rawValue != 1000.0 {
+            description += " ^\(priority)"
+        }
+
+        description += ">"
+
+        return description
+    }
 }
 
-internal func ==(lhs: LayoutConstraint, rhs: LayoutConstraint) -> Bool {
+internal func == (lhs: LayoutConstraint, rhs: LayoutConstraint) -> Bool {
     // If firstItem or secondItem on either constraint has a dangling pointer
     // this comparison can cause a crash. The solution for this is to ensure
     // your layout code hold strong references to things like Views, LayoutGuides
     // and LayoutAnchors as SnapKit will not keep strong references to any of these.
     guard lhs.firstAttribute == rhs.firstAttribute &&
-          lhs.secondAttribute == rhs.secondAttribute &&
-          lhs.relation == rhs.relation &&
-          lhs.priority == rhs.priority &&
-          lhs.multiplier == rhs.multiplier &&
-          lhs.secondItem === rhs.secondItem &&
-          lhs.firstItem === rhs.firstItem else {
+        lhs.secondAttribute == rhs.secondAttribute &&
+        lhs.relation == rhs.relation &&
+        lhs.priority == rhs.priority &&
+        lhs.multiplier == rhs.multiplier &&
+        lhs.secondItem === rhs.secondItem &&
+        lhs.firstItem === rhs.firstItem else {
         return false
     }
     return true
