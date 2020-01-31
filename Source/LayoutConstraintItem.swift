@@ -57,7 +57,10 @@ extension LayoutConstraintItem {
     }
 
     internal var constraints: [Constraint] {
-        return constraintsSet.allObjects as! [Constraint]
+        if let constraints = constraintsSet.allObjects as? [Constraint] {
+            return constraints
+        }
+        return []
     }
 
     internal func add(constraints: [Constraint]) {

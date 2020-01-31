@@ -50,7 +50,7 @@ public struct ConstraintLayoutGuideDSL: ConstraintAttributesDSL {
         ConstraintMaker.removeConstraints(item: guide)
     }
 
-    public var target: AnyObject? {
+    public var target: AnyObject {
         return guide
     }
 

@@ -40,7 +40,7 @@ public class ConstraintMakerFinalizable {
         return self
     }
 
-    public var constraint: Constraint {
-        return description.constraint!
+    public var constraint: Constraint? {
+        return description.constraint
     }
 }

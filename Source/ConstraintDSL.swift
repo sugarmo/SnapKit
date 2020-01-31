@@ -28,19 +28,19 @@
 #endif
 
 public protocol ConstraintDSL {
-    var target: AnyObject? { get }
+    var target: AnyObject { get }
 
-    func setLabel(_ value: String?)
-    func label() -> String?
+    var label: String? { get set }
 }
 
 extension ConstraintDSL {
-    public func setLabel(_ value: String?) {
-        objc_setAssociatedObject(target as Any, &labelKey, value, .OBJC_ASSOCIATION_COPY_NONATOMIC)
-    }
-
-    public func label() -> String? {
-        return objc_getAssociatedObject(target as Any, &labelKey) as? String
+    public var label: String? {
+        get {
+             return objc_getAssociatedObject(target as Any, &labelKey) as? String
+        }
+        nonmutating set {
+            objc_setAssociatedObject(target as Any, &labelKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        }
     }
 }
 

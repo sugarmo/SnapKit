@@ -29,7 +29,7 @@
 
 @available(iOS 8.0, *)
 public struct ConstraintLayoutSupportDSL: ConstraintDSL {
-    public var target: AnyObject? {
+    public var target: AnyObject {
         return support
     }
 

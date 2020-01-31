@@ -85,7 +85,7 @@ public struct ConstraintViewDSL: ConstraintAttributesDSL {
         }
     }
 
-    public var target: AnyObject? {
+    public var target: AnyObject {
         return view
     }
 
